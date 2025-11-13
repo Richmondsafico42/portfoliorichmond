@@ -390,6 +390,7 @@
             pointer-events: none;
         }
 
+        /* Floating Elements - Updated for clickable functionality */
         .floating-element {
             position: absolute;
             background: var(--gradient);
@@ -401,6 +402,15 @@
             font-weight: bold;
             box-shadow: var(--shadow);
             animation: float 6s infinite ease-in-out;
+            cursor: pointer;
+            pointer-events: all;
+            transition: var(--transition);
+            z-index: 10;
+        }
+
+        .floating-element:hover {
+            transform: scale(1.2);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.5);
         }
 
         .element-1 {
@@ -425,6 +435,119 @@
             bottom: 10%;
             right: 20%;
             animation-delay: 4s;
+        }
+
+        /* Technology Modal */
+        .tech-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+
+        .tech-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: rgba(15, 23, 42, 0.95);
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            transform: translateY(30px);
+            transition: var(--transition);
+        }
+
+        .tech-modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--primary);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .modal-description {
+            color: var(--gray-light);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-features {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-features h4 {
+            margin-bottom: 0.8rem;
+            color: var(--secondary);
+        }
+
+        .modal-features ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .modal-features li {
+            padding: 0.3rem 0;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .modal-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
         }
 
         /* Section Styles */
@@ -1137,6 +1260,27 @@
             .footer-content {
                 flex-direction: column;
             }
+            
+            /* Adjust floating elements for mobile */
+            .floating-element {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .element-1 {
+                top: 5%;
+                right: 5%;
+            }
+            
+            .element-2 {
+                bottom: 15%;
+                left: 5%;
+            }
+            
+            .element-3 {
+                bottom: 5%;
+                right: 15%;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1158,6 +1302,16 @@
             .section-title {
                 font-size: 2rem;
             }
+            
+            .modal-content {
+                padding: 1.5rem;
+            }
+            
+            .modal-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -1168,6 +1322,22 @@
         <div class="bg-shape shape-1"></div>
         <div class="bg-shape shape-2"></div>
         <div class="bg-shape shape-3"></div>
+    </div>
+
+    <!-- Technology Modal -->
+    <div class="tech-modal" id="techModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-header">
+                <div class="modal-icon" id="modalIcon"></div>
+                <h2 class="modal-title" id="modalTitle">Technology</h2>
+            </div>
+            <p class="modal-description" id="modalDescription"></p>
+            <div class="modal-features">
+                <h4>Key Features:</h4>
+                <ul id="modalFeatures"></ul>
+            </div>
+        </div>
     </div>
 
     <!-- Navigation -->
@@ -1217,9 +1387,15 @@
                         <img src="profile.png" alt="Richmond M. Safico">
                     </div>
                     <div class="floating-elements">
-                        <div class="floating-element element-1"><i class="fab fa-js"></i></div>
-                        <div class="floating-element element-2"><i class="fab fa-php"></i></div>
-                        <div class="floating-element element-3"><i class="fas fa-database"></i></div>
+                        <div class="floating-element element-1" data-tech="js">
+                            <i class="fab fa-js"></i>
+                        </div>
+                        <div class="floating-element element-2" data-tech="php">
+                            <i class="fab fa-php"></i>
+                        </div>
+                        <div class="floating-element element-3" data-tech="mysql">
+                            <i class="fas fa-database"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1578,6 +1754,46 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Portfolio loaded successfully!');
 
+            // Technology data for the modal
+            const techData = {
+                js: {
+                    title: 'JavaScript',
+                    icon: '<i class="fab fa-js"></i>',
+                    description: 'JavaScript is a versatile programming language that enables interactive web pages and is an essential part of web applications. I use JavaScript for both front-end and back-end development.',
+                    features: [
+                        'Client-side interactivity and DOM manipulation',
+                        'Asynchronous programming with Promises and async/await',
+                        'Modern ES6+ features for cleaner code',
+                        'Integration with various APIs and libraries',
+                        'Server-side development with Node.js'
+                    ]
+                },
+                php: {
+                    title: 'PHP',
+                    icon: '<i class="fab fa-php"></i>',
+                    description: 'PHP is a popular server-side scripting language designed for web development. I use PHP to build dynamic and robust web applications with database integration.',
+                    features: [
+                        'Server-side scripting for dynamic content',
+                        'Database integration with MySQL and others',
+                        'Object-oriented programming capabilities',
+                        'Extensive library of frameworks like Laravel',
+                        'Session management and security features'
+                    ]
+                },
+                mysql: {
+                    title: 'MySQL',
+                    icon: '<i class="fas fa-database"></i>',
+                    description: 'MySQL is an open-source relational database management system. I use MySQL to design, implement, and manage databases for web applications.',
+                    features: [
+                        'Relational database management',
+                        'SQL queries for data manipulation',
+                        'Database design and normalization',
+                        'Stored procedures and functions',
+                        'Data security and backup strategies'
+                    ]
+                }
+            };
+
             // Mobile Navigation Toggle
             const hamburger = document.querySelector('.hamburger');
             const navMenu = document.querySelector('.nav-menu');
@@ -1746,6 +1962,64 @@
                 el.style.transform = 'translateY(20px)';
                 el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
                 revealObserver.observe(el);
+            });
+
+            // Floating elements click functionality
+            const floatingElements = document.querySelectorAll('.floating-element');
+            const techModal = document.getElementById('techModal');
+            const modalClose = document.getElementById('modalClose');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalIcon = document.getElementById('modalIcon');
+            const modalDescription = document.getElementById('modalDescription');
+            const modalFeatures = document.getElementById('modalFeatures');
+
+            floatingElements.forEach(element => {
+                element.addEventListener('click', function() {
+                    const tech = this.getAttribute('data-tech');
+                    const data = techData[tech];
+                    
+                    if (data) {
+                        modalTitle.textContent = data.title;
+                        modalIcon.innerHTML = data.icon;
+                        modalDescription.textContent = data.description;
+                        
+                        // Clear previous features
+                        modalFeatures.innerHTML = '';
+                        
+                        // Add new features
+                        data.features.forEach(feature => {
+                            const li = document.createElement('li');
+                            li.textContent = feature;
+                            modalFeatures.appendChild(li);
+                        });
+                        
+                        // Show modal
+                        techModal.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
+            });
+
+            // Close modal functionality
+            modalClose.addEventListener('click', function() {
+                techModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+
+            // Close modal when clicking outside
+            techModal.addEventListener('click', function(e) {
+                if (e.target === techModal) {
+                    techModal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && techModal.classList.contains('active')) {
+                    techModal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
             });
         });
     </script>
